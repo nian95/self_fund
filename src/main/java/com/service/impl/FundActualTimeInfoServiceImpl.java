@@ -47,7 +47,7 @@ public class FundActualTimeInfoServiceImpl implements FundActualTimeInfoService 
 
 			}
 		} catch (Exception e) {
-			System.out.println("get�����ύʧ��:" + url);
+			System.out.println("get?????????:" + url);
 		}
 		return fundActualTimeInfo;
 	}

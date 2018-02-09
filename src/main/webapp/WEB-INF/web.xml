@@ -4,10 +4,21 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          id="WebApp_ID" version="2.5">
     <display-name>self-fund</display-name>
+
     <welcome-file-list>
-        <welcome-file>/views/login.jsp</welcome-file>
+        <welcome-file>fundNameList.jsp</welcome-file>
     </welcome-file-list>
 
+    <!-- spring容器配置
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring-base.xml</param-value>
+    </context-param>  -->
+
+    <!-- spring容器监听器
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>  -->
 
     <filter>
         <filter-name>encodingFilter</filter-name>
@@ -25,21 +36,27 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- Spring MVC3 Processes application requests -->
+    <!-- Spring MVC3 Processes application requests
     <servlet>
-        <servlet-name>selfFundServlet</servlet-name>
+        <servlet-name>selfFund</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring-base.xml</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+        -->
 
     <error-page>
         <error-code>403</error-code>
         <location>/views/403.jsp</location>
     </error-page>
-
+  <!--
     <servlet-mapping>
-        <servlet-name>selfFundServlet</servlet-name>
+        <servlet-name>selfFund</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+    -->
 
 </web-app>

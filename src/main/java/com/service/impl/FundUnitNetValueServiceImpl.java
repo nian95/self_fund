@@ -17,7 +17,9 @@ import org.apache.http.util.EntityUtils;
 import com.bean.FundNameBean;
 import com.bean.FundUnitNetValueBean;
 import com.common.DBHelper;
+import org.springframework.stereotype.Service;
 
+@Service("fundUnitNetValueService")
 public class FundUnitNetValueServiceImpl implements FundUnitNetValueService {
 
 	private DBHelper dBHelper;
@@ -105,7 +107,7 @@ public class FundUnitNetValueServiceImpl implements FundUnitNetValueService {
 				HttpEntity entity = response.getEntity();
 				String entityString = EntityUtils.toString(entity, "UTF-8");
 				int beginIndex = entityString.indexOf("var Data_netWorthTrend =") + "var Data_netWorthTrend =".length() + 2;
-				int endIndex = entityString.indexOf("/*�ۼƾ�ֵ����*/") - 4;
+				int endIndex = entityString.indexOf("}];") + 1;
 				String cutString = entityString.substring(beginIndex, endIndex);
 				List<String> strList = new ArrayList<String>();
 				this.fillStringToList(cutString , strList);
@@ -122,7 +124,7 @@ public class FundUnitNetValueServiceImpl implements FundUnitNetValueService {
 				
 			}
 		} catch (Exception e) {
-			System.out.println("get�����ύʧ��:" + url);
+			System.out.println("get?????????:" + url);
 		}
 		return fundUnitNetValueList;
 	}

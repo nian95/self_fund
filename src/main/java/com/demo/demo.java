@@ -2,6 +2,9 @@ package com.demo;
 
 import java.util.List;
 
+import com.action.FundNameAction;
+import com.common.CollectionUtils;
+import com.common.FundConstant;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpMessage;
 import org.apache.http.HttpResponse;
@@ -19,36 +22,43 @@ import com.service.impl.FundUnitNetValueServiceImpl;
 
 public class demo {
 
+
 	public static void main(String[] args) {
-//		
-		FundNameServiceImpl fundNameObj = new FundNameServiceImpl();
-//		FundUnitNetValueServiceImpl netValueObj = new FundUnitNetValueServiceImpl();
-		String url = "http://fund.eastmoney.com/js/fundcode_search.js";
-		List<FundNameBean> fundNameList = fundNameObj.queryFundNameListFromWeb(url);
-//		netValueObj.createFundUnitNetValueTables(fundNameList);
-		
-		String webUrl = "http://fund.eastmoney.com/pingzhongdata/";
-		String fCode = "";
-		FundUnitNetValueServiceImpl netValueObj = new FundUnitNetValueServiceImpl();
-		List<FundUnitNetValueBean> fundUnitNetValueList = null;
-		for (FundNameBean fundName : fundNameList) {
-			fCode = fundName.getfCode();
-			System.out.println("fCode : " + fCode);
-//			if (Long.valueOf(fCode) > Long.valueOf("003708")) {
-//			fundUnitNetValueList = netValueObj.queryFundUnitNetValueFromWeb(webUrl, fCode);
-//			netValueObj.saveFundUnitNetValueToDB(fundUnitNetValueList);
-//			}
-		}		
-		
-//		for (FundUnitNetValueBean fundUnitNetValue : fundUnitNetValueList) {
-//			System.out.println("----------------------------------");
-//			System.out.println("锟斤拷锟斤拷Code : " + fundUnitNetValue.getfCode());
-//			System.out.println("锟斤拷锟斤拷位锟斤拷值 : " + fundUnitNetValue.getUnitNetValue());
-//			System.out.println("锟斤拷锟斤拷位锟斤拷值锟斤拷锟斤拷 : " + fundUnitNetValue.getUnitNetValueDate());
-//		}
-		
-		System.out.println("123");
+		demo demo = new demo();
+		demo.insertFunUnitToTable();
 	}
 
+	/**** 分割线 ***********************************************************************************/
+
+	/**
+	 * 创建每个基金的净值表
+	 */
+	private void createFunUnitTable() {
+		FundNameServiceImpl fundNameServiceImpl = new FundNameServiceImpl();
+		List<FundNameBean> fundNameList = fundNameServiceImpl.queryFundNameListFromWeb(FundConstant.FUND_ALL_NAME_LIST_URL);
+		System.out.println("基金数量 : " + fundNameList.size());
+		FundUnitNetValueServiceImpl fundUnitNetValue = new FundUnitNetValueServiceImpl();
+		fundUnitNetValue.createFundUnitNetValueTables(fundNameList);
+	}
+
+	/**
+	 * 给每个基金的净值表中录入值
+	 */
+	private void insertFunUnitToTable() {
+		FundNameServiceImpl fundNameServiceImpl = new FundNameServiceImpl();
+		List<FundNameBean> fundNameList = fundNameServiceImpl.queryFundNameListFromWeb(FundConstant.FUND_ALL_NAME_LIST_URL);
+		System.out.println("基金数量 : " + fundNameList.size());
+		FundUnitNetValueServiceImpl fundUnitNetValue = new FundUnitNetValueServiceImpl();
+		List<FundUnitNetValueBean> fundUnitNetValueList = null;
+		for (FundNameBean fund : fundNameList) {
+			fundUnitNetValueList = fundUnitNetValue.queryFundUnitNetValueFromWeb(FundConstant.FUND_DETAIL_INTO_URL,fund.getfCode());
+			if (!CollectionUtils.isNullOrEmpty(fundUnitNetValueList)) {
+				fundUnitNetValue.saveFundUnitNetValueToDB(fundUnitNetValueList);
+				System.out.println(fund.getfCode() + "-" + fund.getfName() + " : "+ " 有净值！");
+			} else {
+				System.out.println(fund.getfCode() + "-" + fund.getfName() + " : "+ "无净值！");
+			}
+		}
+	}
 
 }

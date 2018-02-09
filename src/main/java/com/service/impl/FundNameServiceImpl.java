@@ -16,15 +16,21 @@ import org.apache.http.util.EntityUtils;
 import com.bean.FundNameBean;
 
 import com.common.DBHelper;
+import org.springframework.stereotype.Service;
 
+@Service("fundNameService")
 public class FundNameServiceImpl implements FundNameService {
 
 	private HttpClient client;
 	private HttpGet request;
 	private DBHelper dBHelper;
 
+	public FundNameServiceImpl() {
+		System.out.println("---FundNameServiceImpl.java被spring实例化。");
+	}
+
 	@Override
-	public List<FundNameBean> queryFundNameListFromWeb(String webUrl) {
+	public List<FundNameBean> 	queryFundNameListFromWeb(String webUrl) {
 		String url = webUrl;
 		client = new DefaultHttpClient();
 		request = new HttpGet(url);

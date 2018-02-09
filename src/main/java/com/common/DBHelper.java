@@ -9,7 +9,7 @@ import java.sql.Statement;
 public class DBHelper {
 	
 	public static final String driver = "oracle.jdbc.driver.OracleDriver";
-	public static final String url = "jdbc:oracle:thin:@localhost:1521:LOCALDEVELO";
+	public static final String url = "jdbc:oracle:thin:@localhost:1521:LOCAL";
 	public static final String user = "nian";
 	public static final String password = "nian";
 	
